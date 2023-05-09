@@ -1,8 +1,6 @@
 package com.example.shop.service.impl;
 
 import com.example.shop.model.Product;
-import com.example.shop.model.User;
-import com.example.shop.model.dto.ProductDto;
 import com.example.shop.repository.ProductRepository;
 import com.example.shop.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +13,7 @@ public class ProductServiceImpl implements ProductService {
 
     // Add new product to shop
     @Override
-    public Product addNewProductToShop(ProductDto product, String sellerName) {
+    public Product addNewProductToShop(Product product, String sellerName) {
         return productRepository.save(new Product(
                 product.getName(),
                 product.getDescription(),

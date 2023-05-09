@@ -18,7 +18,7 @@ public class ProductController {
 
     // Add new product to shop
     @PostMapping("/addNewProduct")
-    public ResponseEntity<Product> addNewProduct(@RequestBody ProductDto product,
+    public ResponseEntity<Product> addNewProduct(@RequestBody Product product,
                                                  @AuthenticationPrincipal UserDetails user) {
         return new ResponseEntity<>(productService.addNewProductToShop(product, user.getUsername()), HttpStatus.CREATED);
     }
