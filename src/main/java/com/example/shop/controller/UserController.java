@@ -51,6 +51,14 @@ public class UserController {
         User user = userRepository.findByEmail(userDetails.getUsername());
 
         userService.addProduct(product, user.getCart());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(new ProductDto(product.getId(), product.getQty()), HttpStatus.OK);
+    }
+
+    @PostMapping("/removeProduct")
+    public ResponseEntity<ProductDto> removeProduct(@AuthenticationPrincipal UserDetails userDetails,
+                                                    @RequestBody Product product) {
+        User userDb = userRepository.findByEmail(userDetails.getUsername());
+        userService.removeProduct(product, userDb.getCart());
+        return new ResponseEntity<>(new ProductDto(product.getId(), product.getQty()), HttpStatus.OK);
     }
 }
