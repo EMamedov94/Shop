@@ -2,6 +2,11 @@ package com.example.shop.controller;
 
 import com.example.shop.components.UserDetails;
 import com.example.shop.model.Product;
+import com.example.shop.model.User;
+import com.example.shop.model.dto.ProductDto;
+import com.example.shop.repository.ProductRepository;
+import com.example.shop.repository.UserRepository;
+import com.example.shop.service.AuthenticationService;
 import com.example.shop.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -21,10 +26,11 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @PostMapping("/addProduct")
-    public ResponseEntity<?> addProduct(@AuthenticationPrincipal UserDetails userDetails,
-                                        @RequestBody Product product) {
+    public ResponseEntity<ProductDto> addProduct(@AuthenticationPrincipal UserDetails userDetails,
+                                                 @RequestBody Product product) {
 //        HttpSession session = request.getSession();
 //
 //        if (session.getAttribute("cart") == null) {
@@ -42,9 +48,9 @@ public class UserController {
 //                item.setQty(item.getQty() + 1);
 //            }
 //        }
+        User user = userRepository.findByEmail(userDetails.getUsername());
 
-
-        //userService.addProduct(id, qty);
+        userService.addProduct(product, user.getCart());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
