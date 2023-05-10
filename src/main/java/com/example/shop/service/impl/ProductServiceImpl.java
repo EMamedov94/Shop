@@ -13,14 +13,16 @@ public class ProductServiceImpl implements ProductService {
 
     // Add new product to shop
     @Override
-    public Product addNewProductToShop(Product product, String sellerName) {
-        return productRepository.save(new Product(
+    public Boolean addNewProductToShop(Product product, String sellerName) {
+        productRepository.save(new Product(
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),
                 product.getQty(),
-                sellerName
+                sellerName,
+                false
         ));
+        return true;
     }
 
     // Delete product from shop

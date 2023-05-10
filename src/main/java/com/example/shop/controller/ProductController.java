@@ -20,13 +20,16 @@ public class ProductController {
     @PostMapping("/addNewProduct")
     public ResponseEntity<String> addNewProduct(@RequestBody Product product,
                                                  @AuthenticationPrincipal UserDetails user) {
+        if (user == null) {
+            return new ResponseEntity<>("Нужна авторизация", HttpStatus.UNAUTHORIZED);
+        }
         productService.addNewProductToShop(product, user.getUsername());
         return new ResponseEntity<>("Продукт добавлен", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deleteProductFromShop/{id}")
-    public ResponseEntity<?> deleteProductFromShop(@PathVariable Long id) {
+    public ResponseEntity<String> deleteProductFromShop(@PathVariable Long id) {
         productService.deleteProductFromShop(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("Продукт удален", HttpStatus.OK);
     }
 }

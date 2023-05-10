@@ -21,12 +21,19 @@ public class Product {
     private Double price;
     private Integer qty;
     private String seller;
+    private Boolean confirmed;
 
-    public Product(String name, String description, Double price, Integer qty, String seller) {
+    public Product(String name,
+                   String description,
+                   Double price,
+                   Integer qty,
+                   String seller,
+                   Boolean confirmed) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.qty = qty;
         this.seller = seller;
+        this.confirmed = confirmed;
     }
 }

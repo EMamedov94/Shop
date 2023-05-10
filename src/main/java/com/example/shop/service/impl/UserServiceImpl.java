@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
-    private final CartItemRepository cartItemRepository;
 
     // Add product to cart
     @Override

@@ -16,12 +16,9 @@ public class WebSecurityConfig {
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                    .requestMatchers(
-                            "/",
-                            "/registrationNewUserForm",
-                            "/addProduct",
-                            "/removeProduct").permitAll()
-                    .requestMatchers("/account/**").authenticated()
+                    .requestMatchers("/", "/registrationNewUserForm").permitAll()
+                    .requestMatchers("/account/**", "/addProduct").hasAuthority("ROLE_USER")
+                    .requestMatchers("/moderator/**").hasAuthority("ROLE_ADMIN")
                 .and()
                 .formLogin()
                     .loginPage("/")
