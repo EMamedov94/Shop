@@ -22,7 +22,7 @@ public class Cart {
     private Long id;
     private Integer totalItems;
     private Double totalSum;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private Set<CartItem> products = new HashSet<>();
 
     public Cart(Integer totalItems, Double totalSum) {

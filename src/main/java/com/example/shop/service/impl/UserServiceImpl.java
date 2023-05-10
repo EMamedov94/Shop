@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
         if (cartItem != null) {
             cartItem.setQty(cartItem.getQty() + 1);
         } else {
-            cart.getProducts().add(new CartItem(1, cart, product));
+            cart.getProducts().add(new CartItem(1, cart, productDb));
         }
         cart.setTotalItems(cart.getTotalItems() + 1);
         cart.setTotalSum(cart.getTotalSum());

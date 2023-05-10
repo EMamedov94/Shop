@@ -11,7 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Data
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,12 +1,16 @@
 package com.example.shop.controller;
 
+import com.example.shop.components.UserDetails;
 import com.example.shop.model.Product;
+import com.example.shop.model.User;
+import com.example.shop.model.dto.ProductDto;
 import com.example.shop.service.ModeratorService;
 import com.example.shop.service.PageService;
 import com.example.shop.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +21,7 @@ import java.util.List;
 public class ModeratorController {
     private final ModeratorService moderatorService;
     private final PageService pageService;
+    private final ProductService productService;
 
     // Confirm product
     @PostMapping("/confirmProduct/{id}")
@@ -29,5 +34,11 @@ public class ModeratorController {
     @GetMapping("/")
     public ResponseEntity<List<Product>> getProducts() {
         return new ResponseEntity<>(pageService.showAllProducts(), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteProductFromShop/{id}")
+    public ResponseEntity<String> deleteProductFromShop(@PathVariable Long id) {
+        productService.deleteProductFromShop(id);
+        return new ResponseEntity<>("Продукт удален", HttpStatus.OK);
     }
 }
