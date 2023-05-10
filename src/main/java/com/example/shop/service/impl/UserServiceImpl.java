@@ -3,6 +3,7 @@ package com.example.shop.service.impl;
 import com.example.shop.model.Cart;
 import com.example.shop.model.CartItem;
 import com.example.shop.model.Product;
+import com.example.shop.repository.CartItemRepository;
 import com.example.shop.repository.CartRepository;
 import com.example.shop.repository.ProductRepository;
 import com.example.shop.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
+    private final CartItemRepository cartItemRepository;
 
     // Add product to cart
     @Override
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService {
             cart.getProducts().add(new CartItem(1, cart, product));
         }
         cart.setTotalItems(cart.getTotalItems() + 1);
-        cart.setTotalSum(cart.totalSum());
+        cart.setTotalSum(cart.getTotalSum());
         cartRepository.save(cart);
     }
 
@@ -46,7 +48,7 @@ public class UserServiceImpl implements UserService {
             cartItem.setQty(cartItem.getQty() - 1);
         }
         cart.setTotalItems(cart.getTotalItems() - 1);
-        cart.setTotalSum(cart.totalSum());
+        cart.setTotalSum(cart.getTotalSum());
         cartRepository.save(cart);
     }
 }

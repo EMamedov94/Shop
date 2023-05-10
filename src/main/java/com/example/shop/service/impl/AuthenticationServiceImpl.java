@@ -31,14 +31,18 @@ public class AuthenticationServiceImpl implements AuthenticationService, UserDet
 
     // Registration new user
     @Override
-    public User registrationNewUser(UserDto user) {
+    public Boolean registrationNewUser(UserDto user) {
+        if (userRepository.findByEmail(user.getEmail()) != null) {
+            return false;
+        }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(new User(
+        userRepository.save(new User(
                 user.getEmail(),
                 user.getPassword(),
                 0D,
                 RoleEnum.ROLE_USER,
-                new Cart()
+                new Cart(0, 0D)
         ));
+        return true;
     }
 }

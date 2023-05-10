@@ -1,6 +1,7 @@
 package com.example.shop.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
+@Data
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,10 +28,5 @@ public class Product {
         this.price = price;
         this.qty = qty;
         this.seller = seller;
-    }
-
-    public Product(Long id, Integer qty) {
-        this.id = id;
-        this.qty = qty;
     }
 }

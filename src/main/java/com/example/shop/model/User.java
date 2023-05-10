@@ -1,7 +1,6 @@
 package com.example.shop.model;
 
 import com.example.shop.enums.RoleEnum;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +27,6 @@ public class User implements UserDetails {
     @Enumerated(value = EnumType.STRING)
     private RoleEnum role;
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonManagedReference
     private Cart cart;
 
     public User(String email, String password, Double balance, RoleEnum role, Cart cart) {

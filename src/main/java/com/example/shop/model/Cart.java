@@ -23,19 +23,19 @@ public class Cart {
     private Integer totalItems;
     private Double totalSum;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonBackReference
     private Set<CartItem> products = new HashSet<>();
 
+    public Cart(Integer totalItems, Double totalSum) {
+        this.totalItems = totalItems;
+        this.totalSum = totalSum;
+    }
+
     @Transient
-    public Double totalSum() {
+    public Double getTotalSum() {
         double sum = 0D;
         for (CartItem product : products) {
             sum += product.getTotalPrice();
         }
         return sum;
-    }
-    @Transient
-    public int getNumberOfProducts() {
-        return this.products.size();
     }
 }
