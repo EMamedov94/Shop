@@ -9,13 +9,19 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200/")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
     // Registration new user
-    @PostMapping("/registrationNewUserForm")
-    public ResponseEntity<String> registrationNewUser(@RequestBody UserDto user) {
-        authenticationService.registrationNewUser(user);
-        return new ResponseEntity<>("Успешная регистрация", HttpStatus.CREATED);
+    @PostMapping("/registrationNewUser")
+    public ResponseEntity<AuthenticationResponse> registrationNewUser(@RequestBody UserDto user) {
+        if (authenticationService.usedEmail(user)) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return ResponseEntity.ok(authenticationService.registration(user));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody UserDto user) {
+        return ResponseEntity.ok(authenticationService.login(user));
     }
 }

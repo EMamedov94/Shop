@@ -1,6 +1,5 @@
 package com.example.shop.controller;
 
-import com.example.shop.components.UserDetails;
 import com.example.shop.model.Product;
 import com.example.shop.model.User;
 import com.example.shop.model.dto.ProductDto;
@@ -18,6 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/moderator")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class ModeratorController {
     private final ModeratorService moderatorService;
     private final PageService pageService;

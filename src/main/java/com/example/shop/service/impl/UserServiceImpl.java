@@ -3,11 +3,13 @@ package com.example.shop.service.impl;
 import com.example.shop.model.Cart;
 import com.example.shop.model.CartItem;
 import com.example.shop.model.Product;
-import com.example.shop.repository.CartItemRepository;
+import com.example.shop.model.User;
 import com.example.shop.repository.CartRepository;
 import com.example.shop.repository.ProductRepository;
+import com.example.shop.repository.UserRepository;
 import com.example.shop.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,11 +17,12 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
+    private final UserRepository userRepository;
 
     // Add product to cart
     @Override
-    public void addProduct(Product product, Cart cart) {
-        Product productDb = productRepository.getReferenceById(product.getId());
+    public void addProduct(Long id, Cart cart) {
+        Product productDb = productRepository.getReferenceById(id);
         CartItem cartItem = cart.getProducts().stream()
                         .filter(f -> f.getProduct().getId().equals(productDb.getId())).findFirst()
                         .orElse(null);
@@ -49,5 +52,10 @@ public class UserServiceImpl implements UserService {
         cart.setTotalItems(cart.getTotalItems() - 1);
         cart.setTotalSum(cart.getTotalSum());
         cartRepository.save(cart);
+    }
+
+    @Override
+    public User getUser(String email) {
+        return userRepository.findByEmail(email);
     }
 }

@@ -32,4 +32,5 @@ public class CartItem {
     public Double getTotalPrice() {
         return getProduct().getPrice() * getQty();
     }
+
 }

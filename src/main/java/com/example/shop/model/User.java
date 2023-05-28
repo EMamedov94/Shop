@@ -2,9 +2,10 @@ package com.example.shop.model;
 
 import com.example.shop.enums.RoleEnum;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -15,8 +16,9 @@ import java.util.List;
 @Table(name = "users")
 @Entity
 @NoArgsConstructor
-@Getter
-@Setter
+@AllArgsConstructor
+@Builder
+@Data
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -28,14 +30,6 @@ public class User implements UserDetails {
     private RoleEnum role;
     @OneToOne(cascade = CascadeType.ALL)
     private Cart cart;
-
-    public User(String email, String password, Double balance, RoleEnum role, Cart cart) {
-        this.email = email;
-        this.password = password;
-        this.balance = balance;
-        this.role = role;
-        this.cart = cart;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -66,6 +60,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }

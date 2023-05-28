@@ -35,4 +35,9 @@ public class Product {
         this.seller = seller;
         this.confirmed = confirmed;
     }
+
+    public Product(Long id, Integer qty) {
+        this.id = id;
+        this.qty = qty;
+    }
 }
