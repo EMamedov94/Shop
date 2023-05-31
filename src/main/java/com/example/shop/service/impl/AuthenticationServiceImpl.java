@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Collections;
 
@@ -38,6 +39,19 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
+    }
+
+    public User loginn(UserDto user) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        user.getEmail(),
+                        user.getPassword()
+                )
+        );
+        var loginUser = userRepository.findByEmail(user.getEmail());
+        var jwtToken = jwtService.generateToken(loginUser);
+        loginUser.setToken(jwtToken);
+        return loginUser;
     }
 
     @Override

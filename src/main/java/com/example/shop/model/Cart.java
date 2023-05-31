@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Cart {
+public class Cart implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -37,5 +38,10 @@ public class Cart {
             sum += product.getTotalPrice();
         }
         return sum;
+    }
+
+    @Transient
+    public Integer getTotalItems() {
+        return products.stream().map(CartItem::getQty).reduce(Integer::sum).get();
     }
 }

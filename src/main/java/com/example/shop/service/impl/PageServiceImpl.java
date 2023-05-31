@@ -2,6 +2,7 @@ package com.example.shop.service.impl;
 
 import com.example.shop.model.Product;
 import com.example.shop.model.User;
+import com.example.shop.model.dto.UserDto;
 import com.example.shop.repository.ProductRepository;
 import com.example.shop.repository.UserRepository;
 import com.example.shop.service.PageService;
@@ -29,7 +30,7 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public User showProfile(UserDetails user) {
+    public User showAuthUser(UserDetails user) {
         return userRepository.findByEmail(user.getUsername());
     }
 }

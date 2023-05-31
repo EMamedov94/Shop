@@ -11,20 +11,20 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/account")
+@RequestMapping("/profile")
 @CrossOrigin(origins = "http://localhost:4200/")
 public class ProductController {
     private final ProductService productService;
 
     // Add new product to shop
     @PostMapping("/addNewProduct")
-    public ResponseEntity<String> addNewProduct(@RequestBody Product product,
+    public ResponseEntity<Product> addNewProduct(@RequestBody Product product,
                                                  @AuthenticationPrincipal UserDetails user) {
         if (user == null) {
-            return new ResponseEntity<>("Нужна авторизация", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        productService.addNewProductToShop(product, user.getUsername());
-        return new ResponseEntity<>("Продукт добавлен", HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.addNewProductToShop(product, user.getUsername()),
+                HttpStatus.CREATED);
     }
 
     @DeleteMapping("/deleteProductFromShop/{id}")

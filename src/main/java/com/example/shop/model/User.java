@@ -30,6 +30,8 @@ public class User implements UserDetails {
     private RoleEnum role;
     @OneToOne(cascade = CascadeType.ALL)
     private Cart cart;
+    @Transient
+    private String token;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

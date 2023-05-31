@@ -30,9 +30,9 @@ public class WebSecurityConfig {
                             "/login",
                             "/addProduct",
                             "/removeProduct",
-                            "/user").permitAll()
+                            "/user",
+                            "/profile/**").permitAll()
                     .requestMatchers(
-                            "/profile/**",
                             "/addNewProduct/**",
                             "/deleteProductFromShop").hasAuthority("ROLE_USER")
                     .requestMatchers("/moderator/**").hasAuthority("ROLE_ADMIN")

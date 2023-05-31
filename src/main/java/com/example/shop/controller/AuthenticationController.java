@@ -1,5 +1,6 @@
 package com.example.shop.controller;
 
+import com.example.shop.model.User;
 import com.example.shop.model.dto.UserDto;
 import com.example.shop.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,13 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.registration(user));
     }
 
+//    @PostMapping("/login")
+//    public ResponseEntity<AuthenticationResponse> login(@RequestBody UserDto user) {
+//        return ResponseEntity.ok(authenticationService.login(user));
+//    }
+
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody UserDto user) {
-        return ResponseEntity.ok(authenticationService.login(user));
+    public ResponseEntity<User> login(@RequestBody UserDto user) {
+        return ResponseEntity.ok(authenticationService.loginn(user));
     }
 }
