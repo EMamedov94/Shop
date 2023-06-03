@@ -24,17 +24,19 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .cors().disable()
                 .authorizeHttpRequests()
                     .requestMatchers("/",
                             "/registrationNewUser",
                             "/login",
                             "/addProduct",
                             "/removeProduct",
-                            "/user",
-                            "/profile/**").permitAll()
+                            "/cart",
+                            "product/**").permitAll()
                     .requestMatchers(
                             "/addNewProduct/**",
-                            "/deleteProductFromShop").hasAuthority("ROLE_USER")
+                            "/deleteProductFromShop",
+                            "/profile/**").hasAuthority("ROLE_USER")
                     .requestMatchers("/moderator/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest()
                 .authenticated()

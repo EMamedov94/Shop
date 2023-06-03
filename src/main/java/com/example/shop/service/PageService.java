@@ -10,5 +10,5 @@ import java.util.List;
 public interface PageService {
     List<Product> showAllProducts();
     User showProfileById(Long id);
-    User showAuthUser(UserDetails user);
+    Product showProductById(Long id);
 }

@@ -30,7 +30,7 @@ public class PageServiceImpl implements PageService {
     }
 
     @Override
-    public User showAuthUser(UserDetails user) {
-        return userRepository.findByEmail(user.getUsername());
+    public Product showProductById(Long id) {
+        return productRepository.getProductById(id);
     }
 }

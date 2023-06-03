@@ -7,6 +7,7 @@ import com.example.shop.model.User;
 import com.example.shop.repository.CartRepository;
 import com.example.shop.repository.ProductRepository;
 import com.example.shop.repository.UserRepository;
+import com.example.shop.service.ProductService;
 import com.example.shop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,77 +19,30 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final CartRepository cartRepository;
-    private final ProductRepository productRepository;
     private final UserRepository userRepository;
+    private final ProductService productService;
 
     // Add product to cart
-//    @Override
-//    public void addProduct(Long id, Cart cart) {
-//        Product productDb = productRepository.getReferenceById(id);
-//        CartItem cartItem = cart.getProducts().stream()
-//                        .filter(f -> f.getProduct().getId().equals(productDb.getId())).findFirst()
-//                        .orElse(null);
-//        if (cartItem != null) {
-//            cartItem.setQty(cartItem.getQty() + 1);
-//        } else {
-//            cart.getProducts().add(new CartItem(1, cart, productDb));
-//        }
-//        cart.setTotalItems(cart.getTotalItems() + 1);
-//        cart.setTotalSum(cart.getTotalSum());
-//        cartRepository.save(cart);
-//    }
-
-//    @Override
-//    public void addProduct(ProductDto product, UserDetails user) {
-//        User userDb = userRepository.findByEmail(user.getUsername());
-//        Cart cart = userDb.getCart();
-//        Product productDb = productRepository.getReferenceById(product.getId());
-//
-//        CartItem cartItem = cart.getProducts().stream()
-//                .filter(f -> f.getProduct().getId().equals(productDb.getId())).findFirst()
-//                .orElse(null);
-//        if (cartItem != null) {
-//            cartItem.setQty(cartItem.getQty() + 1);
-//        } else {
-//            cart.getProducts().add(new CartItem(1, cart, productDb));
-//        }
-//        cart.setTotalItems(cart.getTotalItems() + 1);
-//        cart.setTotalSum(cart.getTotalSum());
-//        cartRepository.save(cart);
-//    }
-
     @Override
-    public void addProduct(Set<CartItem> product, UserDetails user) {
+    public void addProduct(Cart sessionCart, UserDetails user) {
         User userDb = userRepository.findByEmail(user.getUsername());
-        Cart cart = userDb.getCart();
-        product.forEach(f -> f.setCart(cart));
-        cart.setProducts(product);
+        Cart cartDb = userDb.getCart();
 
-        cart.setTotalItems(cart.getTotalItems());
-        cart.setTotalSum(cart.getTotalSum());
-        cartRepository.save(cart);
+        cartDb.setProducts(sessionCart.getProducts());
+        cartDb.setTotalItems(sessionCart.getTotalItems());
+        cartDb.setTotalSum(sessionCart.getTotalSum());
+        cartRepository.save(cartDb);
     }
 
     // Remove product from cart
     @Override
-    public void removeProduct(Product product, Cart cart) {
-        Product productDb = productRepository.getReferenceById(product.getId());
-        CartItem cartItem = cart.getProducts().stream()
-                .filter(f -> f.getProduct().getId().equals(productDb.getId())).findFirst()
-                .orElse(null);
-        assert cartItem != null;
-        if (cartItem.getQty() <= 1) {
-            cart.getProducts().remove(cartItem);
-        } else {
-            cartItem.setQty(cartItem.getQty() - 1);
-        }
-        cart.setTotalItems(cart.getTotalItems() - 1);
-        cart.setTotalSum(cart.getTotalSum());
-        cartRepository.save(cart);
-    }
+    public void removeProduct(Cart sessionCart, UserDetails user) {
+        User userDb = userRepository.findByEmail(user.getUsername());
+        Cart cart = userDb.getCart();
 
-    @Override
-    public User getUser(String email) {
-        return userRepository.findByEmail(email);
+        cart.setProducts(sessionCart.getProducts());
+        cart.setTotalItems(productService.getTotalItems(cart));
+        cart.setTotalSum(productService.getTotalSum(cart));
+        cartRepository.save(cart);
     }
 }

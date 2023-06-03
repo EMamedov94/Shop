@@ -1,5 +1,7 @@
 package com.example.shop.service.impl;
 
+import com.example.shop.model.Cart;
+import com.example.shop.model.CartItem;
 import com.example.shop.model.Product;
 import com.example.shop.repository.ProductRepository;
 import com.example.shop.service.ProductService;
@@ -28,5 +30,22 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void deleteProductFromShop(Long id) {
         productRepository.delete(productRepository.getReferenceById(id));
+    }
+
+    @Override
+    public Integer getTotalItems(Cart cart) {
+        return cart.getProducts().stream()
+                .map(CartItem::getQty)
+                .reduce(Integer::sum).get();
+    }
+
+    @Override
+    public Double getTotalSum(Cart cart) {
+        double price = cart.getProducts().stream()
+                .map(CartItem::getProduct).findFirst().get().getPrice();
+        int items = cart.getProducts().stream()
+                .map(CartItem::getQty)
+                .reduce(Integer::sum).get();
+        return price * items;
     }
 }

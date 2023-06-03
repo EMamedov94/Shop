@@ -11,3 +11,13 @@ spring:
     store-type: jdbc
     jdbc:
       initialize-schema: always
+
+server:
+  ssl:
+    enabled: true
+    key-store-type: PKCS12
+    key-store: classpath:ssl/spring_ssl.pfx
+    key-store-password: root
+
+upload:
+  path: D:\qwe

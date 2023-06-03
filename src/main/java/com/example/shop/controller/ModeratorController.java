@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/moderator")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "https://localhost:4200/")
 public class ModeratorController {
     private final ModeratorService moderatorService;
     private final PageService pageService;

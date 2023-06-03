@@ -28,6 +28,7 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-impl:0.11.5")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.0.4")
     implementation("org.springframework.session:spring-session-jdbc:3.0.0")
+    implementation("io.minio:minio:8.5.2")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")

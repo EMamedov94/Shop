@@ -1,11 +1,12 @@
 package com.example.shop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
 
-@Table(name = "cartItems")
+
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,15 +17,17 @@ public class CartItem implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Integer qty;
+    private Long cartId;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Cart cart;
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private Cart cart;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     private Product product;
 
-    @Transient
-    public Double getTotalPrice() {
-        return getProduct().getPrice() * getQty();
-    }
+
+    //    @Transient
+//    public Double getTotalPrice() {
+//        return getProduct().getPrice() * getQty();
+//    }
 }
