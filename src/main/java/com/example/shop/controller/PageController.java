@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://localhost:4200/")
+@CrossOrigin(origins = "https://localhost:4200/api")
 public class PageController {
     private final PageService pageService;
 
@@ -30,11 +30,17 @@ public class PageController {
     public ResponseEntity<List<Product>> index() {
         List<Product> confirmedProducts = pageService.showAllProducts().stream()
                 .filter(Product::getConfirmed).collect(Collectors.toList());
+        if (confirmedProducts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
         return new ResponseEntity<>(confirmedProducts ,HttpStatus.OK);
     }
     @GetMapping("/cart")
     public ResponseEntity<Cart> cart(HttpServletRequest request) {
         Cart sessionCart = (Cart) request.getSession().getAttribute("cart");
+        if (sessionCart.getProducts().isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(sessionCart ,HttpStatus.OK);
     }
 
@@ -45,6 +51,10 @@ public class PageController {
 
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> productPage(@PathVariable Long id) {
-        return ResponseEntity.ok(pageService.showProductById(id));
+        Product product = pageService.showProductById(id);
+        if (product == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 }

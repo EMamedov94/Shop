@@ -67,10 +67,12 @@ public class UserController {
                 .filter(f -> f.getId().equals(product.getId())).findFirst().orElse(null);
         assert item != null;
         if (item.getQty() <= 1) {
-           sessionCart.getProducts().remove(item);
+            sessionCart.getProducts().remove(item);
         } else {
             item.setQty(item.getQty() - 1);
         }
+        sessionCart.setTotalItems(productService.getTotalItems(sessionCart));
+        sessionCart.setTotalSum(productService.getTotalSum(sessionCart));
         session.setAttribute("cart", sessionCart);
 
         if (user != null) {

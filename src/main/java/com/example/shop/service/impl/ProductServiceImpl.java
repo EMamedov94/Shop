@@ -36,16 +36,21 @@ public class ProductServiceImpl implements ProductService {
     public Integer getTotalItems(Cart cart) {
         return cart.getProducts().stream()
                 .map(CartItem::getQty)
-                .reduce(Integer::sum).get();
+                .reduce(Integer::sum).orElse(0);
     }
 
     @Override
     public Double getTotalSum(Cart cart) {
         double price = cart.getProducts().stream()
-                .map(CartItem::getProduct).findFirst().get().getPrice();
+                .map(p -> p.getProduct().getPrice()).findFirst().orElse(0D);
+//        double price = cart.getProducts().stream()
+//                .map(CartItem::getProduct).findFirst().get().getPrice();
+//        int items = cart.getProducts().stream()
+//                .map(CartItem::getQty)
+//                .reduce(Integer::sum).get();
         int items = cart.getProducts().stream()
-                .map(CartItem::getQty)
-                .reduce(Integer::sum).get();
+                .map(i -> i.getProduct().getQty())
+                .reduce(Integer::sum).orElse(0);
         return price * items;
     }
 }
