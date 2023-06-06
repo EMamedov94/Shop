@@ -31,7 +31,7 @@ public class PageController {
         List<Product> confirmedProducts = pageService.showAllProducts().stream()
                 .filter(Product::getConfirmed).collect(Collectors.toList());
         if (confirmedProducts.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(confirmedProducts ,HttpStatus.OK);
     }
@@ -53,7 +53,7 @@ public class PageController {
     public ResponseEntity<Product> productPage(@PathVariable Long id) {
         Product product = pageService.showProductById(id);
         if (product == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(product, HttpStatus.OK);
     }

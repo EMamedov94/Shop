@@ -32,6 +32,14 @@ public class ProductServiceImpl implements ProductService {
         productRepository.delete(productRepository.getReferenceById(id));
     }
 
+    // Delete product from cart
+    @Override
+    public void deleteProductFromCart(Long id, Cart cart) {
+        cart.getProducts().removeIf(f -> f.getProduct().getId().equals(id));
+        cart.setTotalSum(getTotalSum(cart));
+        cart.setTotalItems(getTotalItems(cart));
+    }
+
     @Override
     public Integer getTotalItems(Cart cart) {
         return cart.getProducts().stream()
@@ -42,15 +50,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Double getTotalSum(Cart cart) {
         double price = cart.getProducts().stream()
-                .map(p -> p.getProduct().getPrice()).findFirst().orElse(0D);
-//        double price = cart.getProducts().stream()
-//                .map(CartItem::getProduct).findFirst().get().getPrice();
-//        int items = cart.getProducts().stream()
-//                .map(CartItem::getQty)
-//                .reduce(Integer::sum).get();
-        int items = cart.getProducts().stream()
-                .map(i -> i.getProduct().getQty())
-                .reduce(Integer::sum).orElse(0);
-        return price * items;
+                .map(p -> p.getProduct().getPrice())
+                .reduce(Double::sum).orElse(0D);
+        return price * getTotalItems(cart);
     }
 }

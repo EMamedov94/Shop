@@ -26,22 +26,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    @Override
-    public AuthenticationResponse login(UserDto user) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        user.getEmail(),
-                        user.getPassword()
-                )
-        );
-        var loginUser = userRepository.findByEmail(user.getEmail());
-        var jwtToken = jwtService.generateToken(loginUser);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
-    }
-
-    public User loginn(UserDto user) {
+    // Login
+    public User login(UserDto user) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         user.getEmail(),
@@ -54,6 +40,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         return loginUser;
     }
 
+    // Registration
     @Override
     public AuthenticationResponse registration(UserDto user) {
         var newUser = User.builder()

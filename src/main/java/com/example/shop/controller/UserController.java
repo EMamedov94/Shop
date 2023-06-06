@@ -80,4 +80,13 @@ public class UserController {
         }
         return new ResponseEntity<>(product, HttpStatus.OK);
     }
+
+    @DeleteMapping("/deleteProductFromCart/{id}")
+    public ResponseEntity<?> deleteProductFromCart(@PathVariable Long id,
+                                                   HttpSession request) {
+        Cart sessionCart = (Cart) request.getAttribute("cart");
+        productService.deleteProductFromCart(id, sessionCart);
+        request.setAttribute("cart", sessionCart);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

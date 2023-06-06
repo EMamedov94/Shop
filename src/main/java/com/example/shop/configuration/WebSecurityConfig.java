@@ -31,13 +31,14 @@ public class WebSecurityConfig {
                             "/login",
                             "/addProduct",
                             "/removeProduct",
+                            "deleteProductFromCart/**",
                             "/cart",
                             "product/**").permitAll()
                     .requestMatchers(
                             "/addNewProduct/**",
                             "/deleteProductFromShop",
                             "/profile/**").hasAuthority("ROLE_USER")
-                    .requestMatchers("/moderator/**").hasAuthority("ROLE_ADMIN")
+                    .requestMatchers("/adminPage/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest()
                 .authenticated()
 //                .and()
