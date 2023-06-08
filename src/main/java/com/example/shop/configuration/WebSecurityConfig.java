@@ -33,11 +33,9 @@ public class WebSecurityConfig {
                             "/removeProduct",
                             "deleteProductFromCart/**",
                             "/cart",
-                            "product/**").permitAll()
-                    .requestMatchers(
-                            "/addNewProduct/**",
-                            "/deleteProductFromShop",
-                            "/profile/**").hasAuthority("ROLE_USER")
+                            "product/**",
+                            "/profile/**").permitAll()
+//                    .requestMatchers("/profile/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                     .requestMatchers("/adminPage/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest()
                 .authenticated()

@@ -19,6 +19,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(Product.builder()
                         .name(product.getName())
                         .description(product.getDescription())
+                        .photoUrl(product.getPhotoUrl())
                         .price(product.getPrice())
                         .qty(product.getQty())
                         .seller(sellerName)
@@ -40,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
         cart.setTotalItems(getTotalItems(cart));
     }
 
+    // Get total items from cart
     @Override
     public Integer getTotalItems(Cart cart) {
         return cart.getProducts().stream()
@@ -47,6 +49,7 @@ public class ProductServiceImpl implements ProductService {
                 .reduce(Integer::sum).orElse(0);
     }
 
+    // Get total sum from cart
     @Override
     public Double getTotalSum(Cart cart) {
         double price = cart.getProducts().stream()

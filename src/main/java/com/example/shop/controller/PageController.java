@@ -45,7 +45,8 @@ public class PageController {
     }
 
     @GetMapping("/profile/{id}")
-    public ResponseEntity<User> profilePage(@PathVariable Long id) {
+    public ResponseEntity<User> profilePage(@AuthenticationPrincipal UserDetails user,
+                                            @PathVariable Long id) {
         return new ResponseEntity<>(pageService.showProfileById(id), HttpStatus.OK);
     }
 

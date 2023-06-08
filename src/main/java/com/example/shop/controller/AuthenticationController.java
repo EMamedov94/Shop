@@ -4,7 +4,9 @@ import com.example.shop.model.User;
 import com.example.shop.model.dto.UserDto;
 import com.example.shop.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +19,22 @@ public class AuthenticationController {
     // Registration new user
     @PostMapping("/registrationNewUser")
     public ResponseEntity<AuthenticationResponse> registrationNewUser(@RequestBody UserDto user) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
         if (authenticationService.usedEmail(user)) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return ResponseEntity.ok(authenticationService.registration(user));
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(authenticationService.registration(user));
     }
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody UserDto user) {
-        return ResponseEntity.ok(authenticationService.login(user));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(authenticationService.login(user));
     }
 }
