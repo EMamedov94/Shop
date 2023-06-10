@@ -1,19 +1,14 @@
 package com.example.shop.service.impl;
 
 import com.example.shop.model.Cart;
-import com.example.shop.model.CartItem;
-import com.example.shop.model.Product;
 import com.example.shop.model.User;
 import com.example.shop.repository.CartRepository;
-import com.example.shop.repository.ProductRepository;
 import com.example.shop.repository.UserRepository;
 import com.example.shop.service.ProductService;
 import com.example.shop.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor

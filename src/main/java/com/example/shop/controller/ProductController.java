@@ -2,9 +2,7 @@ package com.example.shop.controller;
 
 import com.example.shop.model.Product;
 import com.example.shop.service.ProductService;
-import io.minio.MinioClient;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,9 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 @RestController
@@ -30,7 +25,7 @@ public class ProductController {
 
     // Add new product to shop
     @PostMapping("/addNewProduct")
-    public ResponseEntity<Product> addNewProduct(@AuthenticationPrincipal UserDetails user,
+    public ResponseEntity<Object> addNewProduct(@AuthenticationPrincipal UserDetails user,
                                                  @RequestPart Product product,
                                                  @RequestPart MultipartFile photoUrl) throws IOException {
         HttpHeaders headers = new HttpHeaders();
@@ -49,16 +44,22 @@ public class ProductController {
             product.setPhotoUrl("/assets/images/products/" + user.getUsername() + "/" + resultFileName);
         }
         if (user == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body("Нужна авторизация");
         }
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .headers(headers)
                 .body(productService.addNewProductToShop(product, user.getUsername()));
     }
 
+    // Delete product from shop
     @DeleteMapping("/deleteProductFromShop/{id}")
     public ResponseEntity<String> deleteProductFromShop(@PathVariable Long id) {
         productService.deleteProductFromShop(id);
-        return new ResponseEntity<>("Продукт удален", HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("Продукт удален");
     }
 }

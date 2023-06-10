@@ -18,12 +18,17 @@ public class AuthenticationController {
 
     // Registration new user
     @PostMapping("/registrationNewUser")
-    public ResponseEntity<AuthenticationResponse> registrationNewUser(@RequestBody UserDto user) {
+    public ResponseEntity<Object> registrationNewUser(@RequestBody UserDto user) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        if (authenticationService.usedEmail(user)) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        return ResponseEntity.ok()
+        if (authenticationService.usedEmail(user)) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("Email уже используется");
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .headers(headers)
                 .body(authenticationService.registration(user));
     }
@@ -33,7 +38,8 @@ public class AuthenticationController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .headers(headers)
                 .body(authenticationService.login(user));
     }

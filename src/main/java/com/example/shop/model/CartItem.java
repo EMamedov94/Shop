@@ -1,6 +1,5 @@
 package com.example.shop.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,15 +18,6 @@ public class CartItem implements Serializable {
     private Integer qty;
     private Long cartId;
 
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private Cart cart;
-
     @ManyToOne(optional = false)
     private Product product;
-
-
-    //    @Transient
-//    public Double getTotalPrice() {
-//        return getProduct().getPrice() * getQty();
-//    }
 }

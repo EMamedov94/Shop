@@ -9,14 +9,10 @@ import com.example.shop.model.dto.UserDto;
 import com.example.shop.repository.UserRepository;
 import com.example.shop.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
-
-import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
     }
 
+    // Check email exists
     @Override
     public boolean usedEmail(UserDto user) {
         return userRepository.findByEmail(user.getEmail()) != null;

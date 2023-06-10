@@ -1,24 +1,15 @@
 package com.example.shop.controller;
 
 import com.example.shop.model.Cart;
-import com.example.shop.model.CartItem;
-import com.example.shop.model.Product;
 import com.example.shop.model.User;
-import com.example.shop.model.dto.UserDto;
-import com.example.shop.repository.UserRepository;
 import com.example.shop.service.PageService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.codec.Hex;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,36 +17,52 @@ import java.util.stream.Collectors;
 public class PageController {
     private final PageService pageService;
 
+
+    // Show confirmed products
     @GetMapping("/")
-    public ResponseEntity<List<Product>> index() {
-        List<Product> confirmedProducts = pageService.showAllProducts().stream()
-                .filter(Product::getConfirmed).collect(Collectors.toList());
-        if (confirmedProducts.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<Object> index() {
+
+        if (pageService.showConfirmedProducts() == null) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Продукты не найдены");
         }
-        return new ResponseEntity<>(confirmedProducts ,HttpStatus.OK);
-    }
-    @GetMapping("/cart")
-    public ResponseEntity<Cart> cart(HttpServletRequest request) {
-        Cart sessionCart = (Cart) request.getSession().getAttribute("cart");
-        if (sessionCart.getProducts().isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(sessionCart ,HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(pageService.showConfirmedProducts());
     }
 
+    // Get session cart
+    @GetMapping("/cart")
+    public ResponseEntity<Object> cart(HttpServletRequest request) {
+        Cart sessionCart = (Cart) request.getSession().getAttribute("cart");
+        if (sessionCart.getProducts().isEmpty()) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body("Корзина пока пустая");
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(sessionCart);
+    }
+
+    // Get profile by id
     @GetMapping("/profile/{id}")
     public ResponseEntity<User> profilePage(@AuthenticationPrincipal UserDetails user,
                                             @PathVariable Long id) {
         return new ResponseEntity<>(pageService.showProfileById(id), HttpStatus.OK);
     }
 
+    // Get product by id
     @GetMapping("/product/{id}")
-    public ResponseEntity<Product> productPage(@PathVariable Long id) {
-        Product product = pageService.showProductById(id);
-        if (product == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<Object> productPage(@PathVariable Long id) {
+        if (pageService.showProductById(id) == null) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Продукт не найден");
         }
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(pageService.showProductById(id));
     }
 }

@@ -1,14 +1,10 @@
 package com.example.shop.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Table(name = "carts")
@@ -31,19 +27,4 @@ public class Cart implements Serializable {
         this.totalItems = totalItems;
         this.totalSum = totalSum;
     }
-
-//    @Transient
-//    public Double getTotalSum() {
-//        double sum = 0D;
-//        for (CartItem product : products) {
-//            sum += product.getTotalPrice();
-//        }
-//        return sum;
-//    }
-//
-//    @Transient
-//    @JsonIgnore
-//    public Integer getTotalItems() {
-//        return products.stream().map(CartItem::getQty).reduce(Integer::sum).orElse(null);
-//    }
 }

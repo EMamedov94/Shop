@@ -16,9 +16,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "https://localhost:4200/api")
@@ -27,6 +24,7 @@ public class UserController {
     private final ProductService productService;
     private final ProductRepository productRepository;
 
+    // Add product to cart
     @PostMapping("/addProduct")
     public ResponseEntity<ProductDto> addProduct(@AuthenticationPrincipal UserDetails user,
                                                  @RequestBody ProductDto product,
@@ -55,9 +53,12 @@ public class UserController {
         if (user != null) {
             userService.addProduct(sessionCart, user);
         }
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(product);
     }
 
+    // Remove product from cart
     @PostMapping("/removeProduct")
     public ResponseEntity<ProductDto> removeProduct(@AuthenticationPrincipal UserDetails user,
                                                     @RequestBody ProductDto product,
@@ -78,9 +79,12 @@ public class UserController {
         if (user != null) {
             userService.removeProduct(sessionCart, user);
         }
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(product);
     }
 
+    // Delete product from cart
     @DeleteMapping("/deleteProductFromCart/{id}")
     public ResponseEntity<?> deleteProductFromCart(@PathVariable Long id,
                                                    HttpSession request) {

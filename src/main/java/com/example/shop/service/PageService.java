@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface PageService {
     List<Product> showAllProducts();
+    List<Product> showConfirmedProducts();
     User showProfileById(Long id);
     Product showProductById(Long id);
 }

@@ -24,11 +24,19 @@ public class PageServiceImpl implements PageService {
         return productRepository.findAll();
     }
 
+    // Show confirmed products
+    @Override
+    public List<Product> showConfirmedProducts() {
+        return productRepository.findProductsByConfirmed(true);
+    }
+
+    //  Show profile by id
     @Override
     public User showProfileById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
+    // Show product by id
     @Override
     public Product showProductById(Long id) {
         return productRepository.getProductById(id);

@@ -23,21 +23,37 @@ public class AdminController {
 
     // Show all users
     @GetMapping("/showAllUsers")
-    public ResponseEntity<List<User>> showAllUsers() {
-        return new ResponseEntity<>(adminService.showAllUsers(), HttpStatus.OK);
+    public ResponseEntity<Object> showAllUsers() {
+        if (adminService.showAllUsers() == null) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Пользователи не найдены");
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(adminService.showAllUsers());
     }
 
     // Confirm product
     @PostMapping("/confirmProduct/{id}")
     public ResponseEntity<String> confirmProduct(@PathVariable Long id) {
         adminService.acceptProductToShop(id);
-        return new ResponseEntity<>("Продукт подтвержден", HttpStatus.ACCEPTED);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body("Продукт подтвержден");
     }
 
     // Get all products
     @GetMapping("/")
-    public ResponseEntity<List<Product>> getProducts() {
-        return new ResponseEntity<>(pageService.showAllProducts(), HttpStatus.OK);
+    public ResponseEntity<Object> getProducts() {
+        if (pageService.showAllProducts() == null) {
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Продукты не найдены");
+        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(pageService.showAllProducts());
     }
 
     @DeleteMapping("/deleteProductFromShop/{id}")
