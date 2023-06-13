@@ -3,11 +3,13 @@ package com.example.shop.controller;
 import com.example.shop.model.User;
 import com.example.shop.model.dto.UserDto;
 import com.example.shop.service.AuthenticationService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,9 +20,16 @@ public class AuthenticationController {
 
     // Registration new user
     @PostMapping("/registrationNewUser")
-    public ResponseEntity<Object> registrationNewUser(@RequestBody UserDto user) {
+    public ResponseEntity<Object> registrationNewUser(@Valid @RequestBody UserDto user,
+                                                      BindingResult result) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+
+        if (result.hasErrors()) {
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(result.getAllErrors());
+        }
 
         if (authenticationService.usedEmail(user)) {
             return ResponseEntity

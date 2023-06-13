@@ -36,11 +36,6 @@ public class PageController {
     @GetMapping("/cart")
     public ResponseEntity<Object> cart(HttpServletRequest request) {
         Cart sessionCart = (Cart) request.getSession().getAttribute("cart");
-        if (sessionCart.getProducts().isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body("Корзина пока пустая");
-        }
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(sessionCart);
