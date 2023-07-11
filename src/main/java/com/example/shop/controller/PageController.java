@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://localhost:4200/api")
+@CrossOrigin(origins = "https://localhost:4200/")
 public class PageController {
     private final PageService pageService;
 
