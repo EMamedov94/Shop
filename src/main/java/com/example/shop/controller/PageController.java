@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://localhost:4200/")
+@CrossOrigin(origins = "https://localhost:4200")
 public class PageController {
     private final PageService pageService;
 
@@ -34,8 +34,12 @@ public class PageController {
 
     // Get session cart
     @GetMapping("/cart")
-    public ResponseEntity<Object> cart(HttpServletRequest request) {
+    public ResponseEntity<Object> cart(@AuthenticationPrincipal UserDetails user,
+                                       HttpServletRequest request) {
         Cart sessionCart = (Cart) request.getSession().getAttribute("cart");
+//        if (user != null) {
+//
+//        }
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(sessionCart);

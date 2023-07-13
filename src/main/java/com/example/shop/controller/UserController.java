@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "https://localhost:4200/")
+@CrossOrigin(origins = "https://localhost:4200")
 public class UserController {
     private final UserService userService;
     private final ProductService productService;
@@ -36,10 +36,9 @@ public class UserController {
             sessionCart = new Cart();
         }
         CartItem item = sessionCart.getProducts().stream()
-                .filter(f -> f.getId().equals(product.getId())).findFirst().orElse(null);
+                .filter(f -> f.getProduct().getId().equals(product.getId())).findFirst().orElse(null);
         if (item == null) {
             sessionCart.getProducts().add(CartItem.builder()
-                    .id(product.getId())
                     .qty(product.getQty())
                     .product(prod)
                     .build());
@@ -65,7 +64,7 @@ public class UserController {
                                                     HttpSession session) {
         Cart sessionCart = (Cart) session.getAttribute("cart");
         CartItem item = sessionCart.getProducts().stream()
-                .filter(f -> f.getId().equals(product.getId())).findFirst().orElse(null);
+                .filter(f -> f.getProduct().getId().equals(product.getId())).findFirst().orElse(null);
         assert item != null;
         if (item.getQty() <= 1) {
             sessionCart.getProducts().remove(item);
