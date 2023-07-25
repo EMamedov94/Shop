@@ -3,7 +3,8 @@ package com.example.shop.controller;
 import com.example.shop.model.Cart;
 import com.example.shop.model.User;
 import com.example.shop.service.PageService;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.shop.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +12,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
 @RestController
 @RequiredArgsConstructor
 @CrossOrigin(origins = "https://localhost:4200")
 public class PageController {
     private final PageService pageService;
+    private final UserService userService;
 
 
     // Show confirmed products
@@ -35,14 +39,18 @@ public class PageController {
     // Get session cart
     @GetMapping("/cart")
     public ResponseEntity<Object> cart(@AuthenticationPrincipal UserDetails user,
-                                       HttpServletRequest request) {
-        Cart sessionCart = (Cart) request.getSession().getAttribute("cart");
-//        if (user != null) {
-//
-//        }
+                                       HttpSession session) {
+
+        Cart sessionCart = (Cart) session.getAttribute("cart");
+
+        if (user != null) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(userService.getUserCart(user, sessionCart));
+        }
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(sessionCart);
+                .body(Objects.requireNonNullElse(sessionCart, "Ваша корзина пока пуста"));
     }
 
     // Get profile by id

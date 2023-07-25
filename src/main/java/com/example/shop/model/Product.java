@@ -20,6 +20,7 @@ public class Product implements Serializable {
     private String description;
     private Double price;
     private Integer qty;
+    private String category;
     private String seller;
     private Boolean confirmed;
 }

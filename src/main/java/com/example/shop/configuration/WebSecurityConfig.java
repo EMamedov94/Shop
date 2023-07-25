@@ -36,10 +36,10 @@ public class WebSecurityConfig {
                             "/removeProduct",
                             "deleteProductFromCart/**",
                             "/cart",
-                            "product/**",
-                            "/logout").permitAll()
+                            "product/**").permitAll()
                     .requestMatchers(
-                            "/profile/**,").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                            "/profile/**",
+                            "/logout").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                     .requestMatchers("/adminPage/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest()
                     .authenticated()
@@ -48,11 +48,11 @@ public class WebSecurityConfig {
                     .loginPage("/")
                     .permitAll()
                 .and()
-//                .logout()
-//                    .logoutSuccessUrl("/")
-//                    .deleteCookies("token")
-//                    .invalidateHttpSession(true)
-//                .and()
+                .logout()
+                    .logoutSuccessUrl("/")
+                    .deleteCookies("SESSION")
+                    .invalidateHttpSession(true)
+                .and()
                 .sessionManagement()
                     .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()

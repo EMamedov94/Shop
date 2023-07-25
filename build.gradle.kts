@@ -31,7 +31,7 @@ dependencies {
     implementation("io.minio:minio:8.5.2")
     implementation("org.jsoup:jsoup:1.15.4")
     compileOnly("org.projectlombok:lombok")
-    runtimeOnly("org.postgresql:postgresql")
+    implementation("org.postgresql:postgresql:42.5.4")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
